@@ -1,0 +1,28 @@
+[package]
+name = "rust2k26"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+macroquad = "0.4.14"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+kira = "0.12.0"
+
+#lightyear = { version = "0.13", features = ["leafwing"] }
+#serde = { version = "1.0", features = ["derive"] }
+
+# LUA SETUP
+# For WebAssembly: Use Standard Lua 5.4
+#[target.'cfg(target_arch = "wasm32")'.dependencies]
+#mlua = { version = "0.9", features = ["lua54", "vendored"] }
+# For Native (Windows/Linux): Use LuaJIT
+#[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+#mlua = { version = "0.9", features = ["luajit", "vendored"] }
+
+# Web Server Features (for serverlist)
+#axum = "0.7"
+#tokio = { version = "1.0", features = ["full"] }
+
+#[dev-dependencies]
+#wasm-bindgen-test = "0.3"
