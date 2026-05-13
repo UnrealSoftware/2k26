@@ -25,7 +25,7 @@ async fn main() {
     //spritesheet.set_filter(FilterMode::Nearest);
 
     let mut audio = AudioPlayer::new();
-    let _bgm = audio.play_file("assets/unrealsoftware.wav", 0.5, -1.0, true);
+    let _bgm = audio.play_file("assets/unrealsoftware.wav", 0.5, [-50.0, 0.0], true);
 
     loop {
         let delta = get_frame_time();
