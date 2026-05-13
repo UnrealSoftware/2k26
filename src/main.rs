@@ -35,6 +35,14 @@ async fn main() {
         if is_key_down(KeyCode::Up)    { world_target.y -= MOVE_SPEED * delta; }
         if is_key_down(KeyCode::Down)  { world_target.y += MOVE_SPEED * delta; }
 
+        let screen_scale = (screen_width() / GAME_WIDTH).min(screen_height() / GAME_HEIGHT);
+        let mouse_delta = mouse_delta_position();
+
+        if is_mouse_button_down(MouseButton::Left) {
+            world_target.x += mouse_delta.x * delta * MOVE_SPEED * 32.0 * screen_scale;
+            world_target.y += mouse_delta.y * delta * MOVE_SPEED * 32.0 * screen_scale;
+        }
+
         let cam = Camera2D {
             render_target: Some(render_target.clone()),
             target: vec2(world_target.x.floor(), world_target.y.floor()),
@@ -84,7 +92,6 @@ async fn main() {
             },
         );
 
-        draw_rectangle(10.0, 10.0, 260.0, 30.0, RED);
         draw_text("Use Arrow Keys to Scroll", 10.0, 10.0, 20.0, WHITE);
 
         let fps_text = format!("FPS: {}", get_fps());
