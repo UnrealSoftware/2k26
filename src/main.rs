@@ -25,7 +25,7 @@ async fn main() {
     //spritesheet.set_filter(FilterMode::Nearest);
 
     let mut audio = AudioPlayer::new();
-    let _bgm = audio.play_file("assets/unrealsoftware.wav", 0.5, [-50.0, 0.0], true);
+    audio.play_file("assets/unrealsoftware.wav", 0.5, [-50.0, 0.0], true);
 
     loop {
         let delta = get_frame_time();
@@ -93,39 +93,10 @@ async fn main() {
         };
         set_camera(&ui_cam);
 
-        draw_text("Use Arrow Keys to Scroll", 20.0, 30.0, 20.0, WHITE);
-
-        // ---------------------------------------------------------
-        // 4. Draw Black Letterboxes
-        // ---------------------------------------------------------
         set_default_camera();
-
-        /*
-        let scaled_w = GAME_WIDTH * scale;
-        let scaled_h = GAME_HEIGHT * scale;
-        let border_x = (s_width - scaled_w) / 2.0;
-        let border_y = (s_height - scaled_h) / 2.0;
-
-        // Draw physical black rectangles over the edges of the screen
-        // to hide anything rendered outside of the 850x480 safe zone.
-        if border_x > 0.0 {
-            draw_rectangle(0.0, 0.0, border_x, s_height, BLACK); // Left
-            draw_rectangle(s_width - border_x, 0.0, border_x, s_height, BLACK); // Right
-        }
-        if border_y > 0.0 {
-            draw_rectangle(0.0, 0.0, s_width, border_y, BLACK); // Top
-            draw_rectangle(0.0, s_height - border_y, s_width, border_y, BLACK); // Bottom
-        }
-         */
-
-        set_default_camera();
-        clear_background(BLACK); // Automatic letterbox color
+        clear_background(BLACK);
 
         let scale = (screen_width() / GAME_WIDTH).min(screen_height() / GAME_HEIGHT);
-
-        // Optional: Round the scale to the nearest integer for "True" pixel perfection
-        // let scale = scale.floor().max(1.0);
-
         let w = GAME_WIDTH * scale;
         let h = GAME_HEIGHT * scale;
         let x = (screen_width() - w) / 2.0;
@@ -140,12 +111,14 @@ async fn main() {
             },
         );
 
+        draw_text("Use Arrow Keys to Scroll", 20.0, 30.0, 20.0, WHITE);
+
         let fps_text = format!("FPS: {}", get_fps());
         let text_dimensions = measure_text(&fps_text, None, 20, 1.0);
         draw_text(
             &fps_text,
-            screen_width() - text_dimensions.width - 10.0, // 10 pixels of padding from the right
-            20.0 + text_dimensions.offset_y,               // 20 pixels of padding from the top
+            screen_width() - text_dimensions.width - 10.0,
+            20.0 + text_dimensions.offset_y,
             20.0,
             GREEN
         );

@@ -47,7 +47,7 @@ mod native_audio {
     use kira::{
         AudioManager, AudioManagerSettings, DefaultBackend, Decibels, Tween,
         sound::static_sound::{StaticSoundData, StaticSoundHandle},
-        track::{SpatialTrackBuilder, SpatialTrackHandle},
+        track::{SpatialTrackBuilder, SpatialTrackHandle, SpatialTrackDistances},
         listener::ListenerHandle,
     };
     use std::collections::HashMap;
@@ -83,8 +83,12 @@ mod native_audio {
         }
 
         pub fn play_track(&mut self, data: StaticSoundData, pos: [f32; 2]) -> u32 {
-            if let Ok(mut track) = self.manager.add_spatial_sub_track(&self.listener, Self::map_to_3d(pos), SpatialTrackBuilder::new()) {
-                // 2. Route the sound by playing it ON the track handle directly!
+            let distances = SpatialTrackDistances {
+                min_distance: 32.0,
+                max_distance: 10000.0,
+            };
+            let builder = SpatialTrackBuilder::new().distances(distances);
+            if let Ok(mut track) = self.manager.add_spatial_sub_track(&self.listener, Self::map_to_3d(pos), builder) {
                 if let Ok(handle) = track.play(data) {
                     let id = self.next_id;
                     self.sounds.insert(id, (handle, track));

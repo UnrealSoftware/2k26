@@ -61,15 +61,15 @@ function play_decoded(id, buffer, volume, x, y, looping) {
 	gainNode.gain.value = volume;
 
 	let pannerNode = audio_ctx.createPanner();
-	pannerNode.panningModel = 'HRTF';
+	pannerNode.panningModel = 'equalpower';
 	pannerNode.distanceModel = 'inverse';
-	pannerNode.refDistance = 1.0;
+	pannerNode.refDistance = 32.0;
 	pannerNode.maxDistance = 10000.0;
 	pannerNode.rolloffFactor = 1.0;
 
 	pannerNode.positionX.value = x;
-	pannerNode.positionY.value = 0.0; // Flat 2D Elevation
-	pannerNode.positionZ.value = y;   // Game Y -> Audio Z
+	pannerNode.positionY.value = 0.0;
+	pannerNode.positionZ.value = y;
 
 	source.connect(pannerNode);
 	pannerNode.connect(gainNode);
