@@ -1,4 +1,3 @@
-// Export the correct platform implementation
 #[cfg(target_arch = "wasm32")]
 pub use wasm_audio::AudioPlayer;
 
@@ -11,7 +10,6 @@ pub use native_audio::AudioPlayer;
 #[cfg(target_arch = "wasm32")]
 mod wasm_audio {
     extern "C" {
-        // We now only pass x and y
         fn play_sound_from_file(path_ptr: *const u8, path_len: usize, volume: f32, x: f32, y: f32, looping: u32) -> u32;
         fn play_sound_from_memory(data_ptr: *const u8, data_len: usize, volume: f32, x: f32, y: f32, looping: u32) -> u32;
         fn stop_sound(id: u32);
@@ -24,7 +22,6 @@ mod wasm_audio {
     impl AudioPlayer {
         pub fn new() -> Self { Self {} }
 
-        // Takes a 2D position: [x, y]
         pub fn play_file(&mut self, path: &str, volume: f32, pos: [f32; 2], looping: bool) -> u32 {
             unsafe { play_sound_from_file(path.as_ptr(), path.len(), volume, pos[0], pos[1], if looping { 1 } else { 0 }) }
         }
@@ -40,7 +37,7 @@ mod wasm_audio {
 }
 
 // ==========================================
-// Native Implementation (Kira 0.12.0)
+// Native Implementation (Kira)
 // ==========================================
 #[cfg(not(target_arch = "wasm32"))]
 mod native_audio {
